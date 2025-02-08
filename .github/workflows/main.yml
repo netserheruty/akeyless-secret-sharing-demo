@@ -28,12 +28,6 @@ jobs:
         run: |
           echo '${{ steps.fetch_ldap_secret.outputs.ldap_secret }}' | jq -r 'to_entries|map("LDAP_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
 
-# STEP 2 - You can now access each secret separately as environment variables
-      - name: Verify Vars
-        run: |
-          echo "ldap_username: ${{ env.LDAP_USER }}" >> secrets.txt
-          echo "ldap_password: ${{ env.LDAP_PASSWORD }}" >> secrets.txt
-
       - name: Install Akeyless CLI
         run: |
           curl -o akeyless https://akeyless-cli.s3.us-east-2.amazonaws.com/cli/latest/production/cli-linux-amd64
@@ -52,8 +46,9 @@ jobs:
           --rotated-username "${{ env.LDAP_USER }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
-          --user-dn "CN=\"${{ env.LDAP_USER }}\",OU=netser,DC=akeyless,DC=site"
-          --token "${{ steps.fetch_ldap_secret.outputs.token }}"
+          --user-dn "CN=\"${{ env.LDAP_USER }}\",OU=netser,DC=akeyless,DC=site" \
+          --token "${{ steps.fetch_ldap_secret.outputs.token }}" \
+          --auto-rotate "false"
 
       - name: Output Stored Secret Path
         run: |
