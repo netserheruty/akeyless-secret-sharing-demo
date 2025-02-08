@@ -57,4 +57,4 @@ jobs:
 
       - name: Output Stored Secret Path
         run: |
-          echo "✅ Stored Secret Path: /demo/shared_with_me/testuser@example.com/LMS_credential"
+          echo "✅ Stored Secret Path: /demo/shared_with_me/netser.h@akeyless.io/LMS_credential"
