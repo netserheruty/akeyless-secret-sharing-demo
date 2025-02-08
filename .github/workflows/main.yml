@@ -75,7 +75,7 @@ jobs:
           username: ${{ vars.SMTP_USERNAME }}
           password: ${{ vars.SMTP_PASSWORD }}
           subject: "LMS User Creation Status"
-          to: "${{ env.REQUESTER_EMAIL }}"
+          to: "netser.h@akeyless.io"
           from: "no-reply@akeyless.io"
           html_body: |
             <p>Dear <b>${{ env.REQUESTER_EMAIL }}</b>,</p>
