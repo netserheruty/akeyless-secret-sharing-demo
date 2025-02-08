@@ -15,7 +15,7 @@ jobs:
       - name: Set Requester Email
         run: |
           echo "REQUESTER_EMAIL=netser.h@akeyless.io" >> $GITHUB_ENV
-
+          
       - name: Fetch LDAP Dynamic Secret from Akeyless
         id: fetch_ldap_secret
         uses: akeyless-community/akeyless-github-action@v1.1.2
@@ -27,6 +27,16 @@ jobs:
             - name: "/CS/Azure/Domain-akeyless.site/LDAP/LDAP-temp-domain-user-AD"
               output-name: "ldap_secret"
 
+      # Export Dynamic Secret's keys to env vars
+      - name: Export LDAP DS json keys (creds) to Env variables
+        run: |
+          echo '${{ steps.fetch_ldap_secret.outputs.ldap_secret }}' | jq -r 'to_entries|map("LDAP_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' | while read -r line; do
+            key=$(echo "$line" | cut -d= -f1)
+            value=$(echo "$line" | cut -d= -f2-)
+            echo "::add-mask::$value"  # Mask the secret value in logs
+            echo "$line" >> $GITHUB_ENV
+          done
+
       - name: Install Akeyless CLI
         run: |
           curl -o akeyless https://akeyless-cli.s3.us-east-2.amazonaws.com/cli/latest/production/cli-linux-amd64
@@ -35,7 +45,7 @@ jobs:
 
       - name: Housekeeping - Delete Existing Rotated Secret (if exists)
         run: |
-          ./akeyless delete-item -n "/demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential" || true
+          ./akeyless delete-item -n "/demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential" --token ${{ steps.fetch_ldap_secret.outputs.token }}" || true
 
       - name: Store LDAP Credentials in Akeyless as a Rotated Secret (Manual Mode)
         run: |
@@ -49,7 +59,7 @@ jobs:
           --rotated-username "${{ env.LDAP_USER }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
-          --user-dn "CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site" \
+          --user-dn "CN=\"${{ env.LDAP_USER }}\",OU=netser,DC=akeyless,DC=site" \
           --token "${{ steps.fetch_ldap_secret.outputs.token }}" \
           --auto-rotate "false"
 
