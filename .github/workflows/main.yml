@@ -1,0 +1,68 @@
+name: Provision AD User & Store in Akeyless
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write  # Required for JWT authentication
+  contents: read   # Allows access to repo contents
+
+jobs:
+  provision_ad_user:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch LDAP Dynamic Secret from Akeyless
+        id: fetch_ldap_secret
+        uses: akeyless-community/akeyless-github-action@v1.1.2
+        with:
+          access-id: ${{ vars.AKEYLESS_ACCESS_ID }}
+          access-type: jwt
+          api-url: "https://api.akeyless.io"
+          dynamic-secrets: |
+            - name: "/CS/Azure/Domain-akeyless.site/LDAP-temp-domain-user-AD"
+              output-name: "ldap_secret"
+
+      - name: Capture LDAP Credentials
+        run: |
+          echo "LDAP_USERNAME=\"${{ steps.fetch_ldap_secret.outputs.ldap_secret_username }}\"" >> $GITHUB_ENV
+          echo "LDAP_PASSWORD=\"${{ steps.fetch_ldap_secret.outputs.ldap_secret_password }}\"" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Install Akeyless CLI
+        run: |
+          curl -o akeyless https://akeyless-cli.s3.us-east-2.amazonaws.com/cli/latest/production/cli-linux-amd64
+          chmod +x akeyless
+          ./akeyless --init
+
+      - name: Store LDAP Credentials in Akeyless as a Rotated Secret (Manual Mode)
+        run: |
+          ./akeyless rotated-secret create ldap \
+          --name "/demo/shared_with_me/netser.h@akeyless.io/LMS_credential" \
+          --gateway-url "https://conf.nh.cs.akeyless.fans" \
+          --target-name "/CS/Azure/LDAP/AD-ldap-sandbox-akeyless-site" \
+          --authentication-credentials "use-target-creds" \
+          --password-length 16 \
+          --rotator-type "ldap" \
+          --rotated-username "${{ env.LDAP_USERNAME }}" \
+          --rotated-password "${{ env.LDAP_PASSWORD }}" \
+          --user-attribute "sAMAccountName" \
+          --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site"
+          
+        akeyless rotated-secret create ldap \
+            --name "/demo/shared_with_me/netser.h@akeyless.io/LMS_credential" \
+            --gateway-url "https://api.nh.cs.akeyless.fans" \
+            --target-name "/CS/Azure/LDAP/AD-ldap-sandbox-akeyless-site" \
+            --authentication-credentials "use-target-creds" \
+            --password-length 16 \
+            --rotator-type "ldap" \
+            --rotated-username "${{ env.LDAP_USERNAME }}" \
+            --rotated-password "${{ env.LDAP_PASSWORD }}" \
+            --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site" \
+            --auto-rotate false
+        env:
+          TOKEN: ${{ steps.fetch_ldap_secret.outputs.token }}
+
+      - name: Output Stored Secret Path
+        run: |
+          echo "✅ Stored Secret Path: /demo/shared_with_me/testuser@example.com/LMS_credential"
