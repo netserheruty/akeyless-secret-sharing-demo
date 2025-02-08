@@ -23,6 +23,18 @@ jobs:
             - name: "/CS/Azure/Domain-akeyless.site/LDAP/LDAP-temp-domain-user-AD"
               output-name: "ldap_secret"
 
+# Export Dynamic Secret's keys to env vars
+      - name: Export LDAP DS json keys (creds) to Env variables
+        run: |
+          echo '${{ steps.fetch_ldap_secret.outputs.ldap_secret }}' | jq -r 'to_entries|map("LDAP_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+
+# STEP 2 - You can now access each secret separately as environment variables
+      - name: Verify Vars
+        run: |
+          echo "ldap_username: ${{ env.LDAP_USERNAME }}" >> secrets.txt
+          echo "ldap_password: ${{ env.LDAP_PASSWORD }}" >> secrets.txt
+
+
       - name: Capture LDAP Credentials
         run: |
           echo "LDAP_USERNAME=\"${{ steps.fetch_ldap_secret.outputs.ldap_secret_username }}\"" >> $GITHUB_ENV
