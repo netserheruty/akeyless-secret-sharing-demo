@@ -46,10 +46,10 @@ jobs:
           --authentication-credentials "use-target-creds" \
           --password-length 16 \
           --rotator-type "ldap" \
-          --rotated-username "${{ env.LDAP_USERNAME }}" \
+          --rotated-username "${{ env.LDAP_USER }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
-          --user-dn "CN=${{ env.LDAP_USERNAME }},OU=netser,DC=akeyless,DC=site" \
+          --user-dn "CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site" \
           --token "${{ steps.fetch_ldap_secret.outputs.token }}" \
           --auto-rotate "false"
 
