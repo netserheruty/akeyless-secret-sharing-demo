@@ -69,7 +69,7 @@ jobs:
 
       - name: Retrieve Akeyless Item ID
         run: |
-          ITEM_ID=$(./akeyless describe-item -n "/demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential" | jq -r '.item_id')
+          ITEM_ID=$(./akeyless describe-item -n "/demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential" --token "${{ steps.fetch_ldap_secret.outputs.token }}" | jq -r '.item_id')
           echo "ITEM_ID=$ITEM_ID" >> $GITHUB_ENV
 
       - name: Encode Requester Email for URL
