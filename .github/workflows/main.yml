@@ -97,10 +97,10 @@ jobs:
               <li><b>Status:</b> <b>User successfully created</b></li>
               <li><b>SamAccountName:</b> ${{ env.LDAP_USER }}</li>
               <li><b>User DN:</b> CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site</li>
+              <li><b>Vault URL:</b> <a href="https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true">Click here to access your credentials</a></li>
               <li><b>Secret Name:</b> <a href="https://console.akeyless.io/items?id=${{ env.ITEM_ID }}&name=%2Fdemo%2Fshared_with_me%2F${{ env.REQUESTER_EMAIL_URLENCODED }}%2FLMS_credential">
                   /demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential</a>
               </li>
-              <li><b>Vault URL:</b> <a href="https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true">Click here to access your credentials</a></li>
             </ul>
 
             <p>Note: Click on the Vault URL to securely retrieve the user password from Akeyless (authentication via <b>SSO with Entra ID</b>)</p>
