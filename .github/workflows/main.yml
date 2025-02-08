@@ -31,15 +31,8 @@ jobs:
 # STEP 2 - You can now access each secret separately as environment variables
       - name: Verify Vars
         run: |
-          echo "ldap_username: ${{ env.LDAP_USERNAME }}" >> secrets.txt
+          echo "ldap_username: ${{ env.LDAP_USER }}" >> secrets.txt
           echo "ldap_password: ${{ env.LDAP_PASSWORD }}" >> secrets.txt
-
-
-      - name: Capture LDAP Credentials
-        run: |
-          echo "LDAP_USERNAME=\"${{ steps.fetch_ldap_secret.outputs.ldap_secret_username }}\"" >> $GITHUB_ENV
-          echo "LDAP_PASSWORD=\"${{ steps.fetch_ldap_secret.outputs.ldap_secret_password }}\"" >> $GITHUB_ENV
-        shell: bash
 
       - name: Install Akeyless CLI
         run: |
@@ -56,7 +49,7 @@ jobs:
           --authentication-credentials "use-target-creds" \
           --password-length 16 \
           --rotator-type "ldap" \
-          --rotated-username "${{ env.LDAP_USERNAME }}" \
+          --rotated-username "${{ env.LDAP_USER }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
           --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site"          
