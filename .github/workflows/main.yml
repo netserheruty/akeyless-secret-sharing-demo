@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Set Requester Email
         run: |
-          echo "REQUESTER_EMAIL=netser.h@akeyless.io" >> $GITHUB_ENV
+          echo "REQUESTER_EMAIL=netser@refaelakeyless.onmicrosoft.com" >> $GITHUB_ENV
           
       - name: Fetch LDAP Dynamic Secret from Akeyless
         id: fetch_ldap_secret
@@ -76,7 +76,7 @@ jobs:
           password: ${{ vars.SMTP_PASSWORD }}
           subject: "LMS User Creation Status"
           to: "${{ env.REQUESTER_EMAIL }}"
-          from: "no-reply@yourdomain.com"
+          from: "no-reply@akeyless.io"
           html_body: |
             <p>Dear <b>${{ env.REQUESTER_EMAIL }}</b>,</p>
 
