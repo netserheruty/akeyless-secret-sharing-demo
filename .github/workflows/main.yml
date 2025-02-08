@@ -92,6 +92,6 @@ jobs:
               <li><b>Vault URL:</b> <a href="https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true">Click here to access your credentials</a></li>
             </ul>
 
-            <p>Note: Click on the Vault URL to securely retrieve the user password from Akeyless. Authentication via <b>SSO with Entra ID</b> is required.</p>
+            <p>Note: Click on the Vault URL to securely retrieve the user password from Akeyless (authentication via <b>SSO with Entra ID</b>)</p>
 
             <p><b>Thanks,</b><br>Automation Team</p>
