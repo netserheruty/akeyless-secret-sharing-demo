@@ -77,21 +77,21 @@ jobs:
           subject: "LMS User Creation Status"
           to: "${{ env.REQUESTER_EMAIL }}"
           from: "no-reply@yourdomain.com"
-          body: |
-            Dear ${{ env.REQUESTER_EMAIL }},
+          html_body: |
+            <p>Dear <b>${{ env.REQUESTER_EMAIL }}</b>,</p>
 
-            The LMS User has been successfully created. Kindly check the Akeyless Vault details below to access the user password.
+            <p>The LMS User has been successfully created. Kindly check the Akeyless Vault details below to access the user password.</p>
 
-            **Request Type:** LMS User  
-            **Requestor:** ${{ env.REQUESTER_EMAIL }}  
-            **Status:** **User successfully created**  
-            **SamAccountName:** ${{ env.LDAP_USER }}  
-            **User DN:** CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site  
-            **Secret Name:** /demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential  
-            **Vault URL:** [Click here to securely access your credentials](https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true)  
+            <ul>
+              <li><b>Request Type:</b> LMS User</li>
+              <li><b>Requestor:</b> ${{ env.REQUESTER_EMAIL }}</li>
+              <li><b>Status:</b> <b>User successfully created</b></li>
+              <li><b>SamAccountName:</b> ${{ env.LDAP_USER }}</li>
+              <li><b>User DN:</b> CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site</li>
+              <li><b>Secret Name:</b> /demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential</li>
+              <li><b>Vault URL:</b> <a href="https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true">Click here to access your credentials</a></li>
+            </ul>
 
-            Note: Click on the Vault URL to securely retrieve the user password from Akeyless. Authentication via **SSO with Entra ID** is required.
+            <p>Note: Click on the Vault URL to securely retrieve the user password from Akeyless. Authentication via <b>SSO with Entra ID</b> is required.</p>
 
-            **Thanks,**  
-            **Automation Team**
-        content_type: text/html
+            <p><b>Thanks,</b><br>Automation Team</p>
