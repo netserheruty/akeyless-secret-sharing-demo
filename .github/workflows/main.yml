@@ -47,19 +47,7 @@ jobs:
           --rotated-username "${{ env.LDAP_USERNAME }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
-          --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site"
-          
-        akeyless rotated-secret create ldap \
-            --name "/demo/shared_with_me/netser.h@akeyless.io/LMS_credential" \
-            --gateway-url "https://api.nh.cs.akeyless.fans" \
-            --target-name "/CS/Azure/LDAP/AD-ldap-sandbox-akeyless-site" \
-            --authentication-credentials "use-target-creds" \
-            --password-length 16 \
-            --rotator-type "ldap" \
-            --rotated-username "${{ env.LDAP_USERNAME }}" \
-            --rotated-password "${{ env.LDAP_PASSWORD }}" \
-            --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site" \
-            --auto-rotate false
+          --user-dn "CN=\"${{ env.LDAP_USERNAME }}\",OU=netser,DC=akeyless,DC=site"          
         env:
           TOKEN: ${{ steps.fetch_ldap_secret.outputs.token }}
 
