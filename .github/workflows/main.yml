@@ -20,7 +20,7 @@ jobs:
           access-type: jwt
           api-url: "https://api.akeyless.io"
           dynamic-secrets: |
-            - name: "/CS/Azure/Domain-akeyless.site/LDAP-temp-domain-user-AD"
+            - name: "/CS/Azure/Domain-akeyless.site/LDAP/LDAP-temp-domain-user-AD"
               output-name: "ldap_secret"
 
       - name: Capture LDAP Credentials
