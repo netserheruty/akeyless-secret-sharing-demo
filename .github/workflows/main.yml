@@ -66,3 +66,32 @@ jobs:
       - name: Output Stored Secret Path
         run: |
           echo "✅ Stored Secret Path: /demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential"
+
+      - name: Send Email Notification to Requester
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ vars.SMTP_SERVER }}
+          server_port: ${{ vars.SMTP_PORT }}
+          username: ${{ vars.SMTP_USERNAME }}
+          password: ${{ vars.SMTP_PASSWORD }}
+          subject: "LMS User Creation Status"
+          to: "${{ env.REQUESTER_EMAIL }}"
+          from: "no-reply@yourdomain.com"
+          body: |
+            Dear ${{ env.REQUESTER_EMAIL }},
+
+            The LMS User has been successfully created. Kindly check the Akeyless Vault details below to access the user password.
+
+            **Request Type:** LMS User  
+            **Requestor:** ${{ env.REQUESTER_EMAIL }}  
+            **Status:** **User successfully created**  
+            **SamAccountName:** ${{ env.LDAP_USER }}  
+            **User DN:** CN=${{ env.LDAP_USER }},OU=netser,DC=akeyless,DC=site  
+            **Secret Name:** /demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential  
+            **Vault URL:** [Click here to securely access your credentials](https://auth.akeyless.io/oidc-login?access_id=p-fjcjzsyhc7mp&redirect_uri=https%3A%2F%2Fconsole.akeyless.io%2Flogin-oidc&is_short_token=true)  
+
+            Note: Click on the Vault URL to securely retrieve the user password from Akeyless. Authentication via **SSO with Entra ID** is required.
+
+            **Thanks,**  
+            **Automation Team**
+        content_type: text/html
