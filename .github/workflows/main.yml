@@ -31,7 +31,7 @@ jobs:
 # STEP 2 - You can now access each secret separately as environment variables
       - name: Verify Vars
         run: |
-          echo "ldap_username: ${{ env.LDAP_ID }}" >> secrets.txt
+          echo "ldap_username: ${{ env.LDAP_USER }}" >> secrets.txt
           echo "ldap_password: ${{ env.LDAP_PASSWORD }}" >> secrets.txt
 
       - name: Install Akeyless CLI
@@ -52,9 +52,8 @@ jobs:
           --rotated-username "${{ env.LDAP_USER }}" \
           --rotated-password "${{ env.LDAP_PASSWORD }}" \
           --user-attribute "sAMAccountName" \
-          --user-dn "CN=\"${{ env.LDAP_USER }}\",OU=netser,DC=akeyless,DC=site"          
-        env:
-          TOKEN: ${{ steps.fetch_ldap_secret.outputs.token }}
+          --user-dn "CN=\"${{ env.LDAP_USER }}\",OU=netser,DC=akeyless,DC=site"
+          --token "${{ steps.fetch_ldap_secret.outputs.token }}"
 
       - name: Output Stored Secret Path
         run: |
