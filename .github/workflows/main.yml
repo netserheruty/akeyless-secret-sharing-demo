@@ -51,7 +51,7 @@ jobs:
         run: |
           ./akeyless rotated-secret create ldap \
           --name "/demo/shared_with_me/${{ env.REQUESTER_EMAIL }}/LMS_credential" \
-          --gateway-url "https://conf.nh.cs.akeyless.fans" \
+          --gateway-url "https://gw.nh.cs.akeyless.fans" \
           --target-name "/CS/Azure/LDAP/AD-ldap-sandbox-akeyless-site" \
           --authentication-credentials "use-target-creds" \
           --password-length 16 \
