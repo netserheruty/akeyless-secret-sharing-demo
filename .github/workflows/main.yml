@@ -22,7 +22,7 @@ jobs:
         with:
           access-id: ${{ vars.AKEYLESS_ACCESS_ID }}
           access-type: jwt
-          api-url: "https://api.nh.cs.akeyless.fans"
+          api-url: "https://gw.nh.cs.akeyless.fans/api/v2"
           dynamic-secrets: |
             - name: "/CS/Azure/Domain-akeyless.site/LDAP/LDAP-temp-domain-user-AD"
               output-name: "ldap_secret"
