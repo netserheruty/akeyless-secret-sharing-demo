@@ -1,0 +1,34 @@
+name: quick test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write  # Required for JWT authentication
+  contents: read   # Allows access to repo contents
+
+jobs:
+  provision_ad_user:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch Secret from Akeyless
+        id: fetch_secret
+        uses: akeyless-community/akeyless-github-action@v1.1.2
+        with:
+          access-id: ${{ vars.AKEYLESS_ACCESS_ID }}
+          access-type: jwt
+          api-url: "https://gw.nh.cs.akeyless.fans/api/v2"
+          static-secrets: |
+            - name: "/MyFirstSecret"
+              output-name: "my_secret"
+
+      - name: Install Akeyless CLI
+        run: |
+          curl -o akeyless https://akeyless-cli.s3.us-east-2.amazonaws.com/cli/latest/production/cli-linux-amd64
+          chmod +x akeyless
+          ./akeyless --init
+
+      - name: test CLI with Token
+        run: |
+          ./akeyless get-secret-value -n /MyFirstSecret --token "${{ steps.fetch_secret.outputs.token }}"
