@@ -8,7 +8,7 @@ permissions:
   contents: read   # Allows access to repo contents
 
 jobs:
-  provision_ad_user:
+  test:
     runs-on: ubuntu-latest
 
     steps:
