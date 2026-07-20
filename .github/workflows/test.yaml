@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Fetch Secret from Akeyless
         id: fetch_secret
-        uses: akeyless-community/akeyless-github-action@vfix/node-deprecations-and-dynamic-secret-key
+        uses: akeyless-community/akeyless-github-action@fix/node-deprecations-and-dynamic-secret-key
         with:
           access-id: ${{ vars.AKEYLESS_ACCESS_ID }}
           access-type: jwt
