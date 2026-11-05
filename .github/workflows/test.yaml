@@ -29,6 +29,7 @@ jobs:
           chmod +x akeyless
           ./akeyless --init
 
-      - name: test CLI with Token
+      - name: test CLI with Token get secret and sub-claims
         run: |
           ./akeyless get-secret-value -n /MyFirstSecret --token "${{ steps.fetch_secret.outputs.token }}"
+          ./akeyless describe-sub-claims --token "${{ steps.fetch_secret.outputs.token }}"
